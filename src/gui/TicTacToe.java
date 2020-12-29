@@ -29,9 +29,8 @@ public class TicTacToe extends Application
 			pStage.setTitle("Tic-Tac-Toe");
 			Parent root = new GridPane();
 			Board instance = new Board();
-			BoardView instanceView = new BoardView(instance);
-			instanceView.setLayout();
-			
+			setTileViews(instance);
+			setTilesOnAction(instance);
 			pStage.setScene(new Scene(root, DIMENSION, DIMENSION));
 			pStage.show();
 		} 
@@ -41,15 +40,47 @@ public class TicTacToe extends Application
 		}
 	}
 	
-	private void setAllOnAction(Board pBoard)
+	private static void changeTeam()
 	{
-		AbstractBoardObserver observer = pBoard.getObserver();
+		aCurrentTeam = Team.values()[(aCurrentTeam.ordinal() + 1) % 2];
+	}
+	
+	private static void setTilesOnAction(Board pBoard)
+	{
 		for ( List<Tile> list : pBoard.getGrid() )
 		{
 			for ( Tile tile : list )
 			{
-				
+				((TileView)tile.getObserver()).setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent pEvent) 
+					{
+						tile.setTeam(aCurrentTeam);
+						changeTeam();
+					}
+					
+				});
 			}
+		}
+	}
+	
+	private static void setTileViews(Board pBoard)
+	{
+		int separation = DIMENSION/3;
+		int startingPoint = -separation/2;
+		int countY = 1;
+		for ( List<Tile> list : pBoard.getGrid() )
+		{
+			int countX = 1;
+			int y = separation * countY + startingPoint;
+			for ( Tile tile : list )
+			{
+				int x = separation * countX + startingPoint;
+				tile.setLayout(x, y);
+				countX++;
+			}
+			countY++;
 		}
 	}
 }

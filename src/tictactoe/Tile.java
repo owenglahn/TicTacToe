@@ -1,45 +1,51 @@
 package tictactoe;
 
-import java.util.List;
 import java.util.Optional;
 
+import gui.AbstractObserver;
 import gui.TileView;
 
 public class Tile {
 	
-	private Optional<Team> aTeam;
+	private Optional<Team> aTeam = Optional.empty();
+	private final AbstractObserver aObserver = new TileView(this);
 	
 	public boolean isBlank()
 	{
 		return aTeam.isEmpty();
 	}
 	
-	public Optional<Team> getTeam()
+	/*
+	 * @pre ! aTeam.isEmpty()
+	 */
+	public String getTeamAsString()
 	{
-		return aTeam;
-	}
-	
-	public void setTeam(Team pTeam)
-	{
-		aTeam = Optional.ofNullable(pTeam);
+		assert ! aTeam.isEmpty();
+		return aTeam.toString();
 	}
 	
 	/*
-	 * @pre Board.INSTANCE.containsTile(this)
+	 * 
 	 */
-	public int[] getPosition(Board pBoard)
+	public void setTeam(Team pTeam)
 	{
-		assert pBoard.containsTile(this);
-		int[] pos = new int[2];
-		List<List<Tile>> grid = pBoard.getGrid();
-		for (int i = 0; i < 3; i++)
+		if (aTeam.isEmpty()) 
 		{
-			if (grid.get(i).contains(this)) 
-			{
-				pos[0] = i;
-				pos[1] = grid.get(i).indexOf(this);
-			}
+			aTeam = Optional.ofNullable(pTeam);
+			aObserver.tileChanged();
+		} else {
+			return;
 		}
-		return pos;
+	}
+	
+	public AbstractObserver getObserver()
+	{
+		return aObserver;
+	}
+	
+	public void setLayout(int pX, int pY)
+	{
+		assert aObserver.getClass().equals(TileView.class);
+		((TileView)aObserver).setLayout(pX, pY);
 	}
 }

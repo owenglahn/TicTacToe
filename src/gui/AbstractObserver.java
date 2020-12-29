@@ -1,6 +1,6 @@
 package gui;
 
-public interface AbstractBoardObserver {
+public interface AbstractObserver {
 
 	public void tileChanged();
 	
