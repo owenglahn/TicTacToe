@@ -21,7 +21,7 @@ public class Tile {
 	public String getTeamAsString()
 	{
 		assert ! aTeam.isEmpty();
-		return aTeam.toString();
+		return aTeam.get().toString();
 	}
 	
 	/*

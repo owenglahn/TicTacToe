@@ -7,6 +7,9 @@ public class TileView extends Button implements AbstractObserver {
 	
 	private final Tile aTile;
 	private boolean aPositionSet = false;
+	{
+		setStyle("-fx-font-size: 3em; ");
+	}
 	
 	/*
 	 * @pre pTile != null

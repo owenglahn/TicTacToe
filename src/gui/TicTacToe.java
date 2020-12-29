@@ -27,9 +27,9 @@ public class TicTacToe extends Application
 	{// TODO
 		try {
 			pStage.setTitle("Tic-Tac-Toe");
-			Parent root = new GridPane();
+			GridPane root = new GridPane();
 			Board instance = new Board();
-			setTileViews(instance);
+			setTileViews(instance, root);
 			setTilesOnAction(instance);
 			pStage.setScene(new Scene(root, DIMENSION, DIMENSION));
 			pStage.show();
@@ -65,7 +65,7 @@ public class TicTacToe extends Application
 		}
 	}
 	
-	private static void setTileViews(Board pBoard)
+	private static void setTileViews(Board pBoard, GridPane pPane)
 	{
 		int separation = DIMENSION/3;
 		int startingPoint = -separation/2;
@@ -77,7 +77,8 @@ public class TicTacToe extends Application
 			for ( Tile tile : list )
 			{
 				int x = separation * countX + startingPoint;
-				tile.setLayout(x, y);
+				pPane.getChildren().add((TileView)tile.getObserver());
+//				tile.setLayout(x, y);
 				countX++;
 			}
 			countY++;
