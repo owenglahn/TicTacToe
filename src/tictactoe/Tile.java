@@ -27,15 +27,15 @@ public class Tile {
 	/*
 	 * 
 	 */
-	public void setTeam(Team pTeam)
+	public Team setTeam(Team pTeam)
 	{
 		if (aTeam.isEmpty()) 
 		{
 			aTeam = Optional.ofNullable(pTeam);
 			aObserver.tileChanged();
-		} else {
-			return;
+			return Team.values()[(pTeam.ordinal() + 1) % 2];
 		}
+		return pTeam;
 	}
 	
 	public AbstractObserver getObserver()
@@ -43,9 +43,16 @@ public class Tile {
 		return aObserver;
 	}
 	
-	public void setLayout(int pX, int pY)
+	@Override
+	public boolean equals(Object pTile)
 	{
-		assert aObserver.getClass().equals(TileView.class);
-		((TileView)aObserver).setLayout(pX, pY);
+		assert pTile.getClass().equals(Tile.class);
+		return aTeam.equals(((Tile)pTile).aTeam);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return aTeam.hashCode();
 	}
 }

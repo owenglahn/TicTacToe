@@ -6,7 +6,6 @@ import tictactoe.Tile;
 public class TileView extends Button implements AbstractObserver {
 	
 	private final Tile aTile;
-	private boolean aPositionSet = false;
 	{
 		setStyle("-fx-font-size: 4em; ");
 	}
@@ -28,16 +27,5 @@ public class TileView extends Button implements AbstractObserver {
 	{
 		assert ! aTile.isBlank();
 		setText(aTile.getTeamAsString());
-	}
-	
-	/*
-	 * @pre ! aPositionSet
-	 */
-	public void setLayout(int pX, int pY)
-	{
-		assert ! aPositionSet;
-		setLayoutX(pX);
-		setLayoutY(pY);
-		aPositionSet = true;
 	}
 }

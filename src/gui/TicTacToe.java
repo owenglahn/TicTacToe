@@ -2,6 +2,7 @@ package gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -44,11 +45,6 @@ public class TicTacToe extends Application
 		}
 	}
 	
-	private static void changeTeam()
-	{
-		aCurrentTeam = Team.values()[(aCurrentTeam.ordinal() + 1) % 2];
-	}
-	
 	private static void setTilesOnAction(Board pBoard)
 	{
 		for ( List<Tile> list : pBoard.getGrid() )
@@ -60,10 +56,10 @@ public class TicTacToe extends Application
 					@Override
 					public void handle(ActionEvent pEvent) 
 					{
-						tile.setTeam(aCurrentTeam);
-						changeTeam();
+						aCurrentTeam = tile.setTeam(aCurrentTeam);
+						if ( pBoard.hasWinner() )
+							declareWinner(tile.getTeamAsString());
 					}
-					
 				});
 			}
 		}
@@ -107,5 +103,13 @@ public class TicTacToe extends Application
 				((TileView)tile.getObserver()).setPrefSize(DIMENSION/3, DIMENSION/3);
 			}
 		}
+	}
+	
+	private static void declareWinner(String pTeamName)
+	{
+		//TODO
+		Alert winMessage = new Alert(Alert.AlertType.INFORMATION);
+		winMessage.setHeaderText("Winner is " + pTeamName + "!");
+		winMessage.show();
 	}
 }
