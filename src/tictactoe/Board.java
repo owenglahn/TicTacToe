@@ -58,4 +58,15 @@ public class Board {
 		return (topLeft.equals(center) && topLeft.equals(bottomRight) && ! topLeft.isBlank())  
 				|| (topRight.equals(center) && topRight.equals(bottomLeft) && ! topRight.isBlank());
 	}
+	
+	public void clear()
+	{
+		for ( List<Tile> list : aGrid )
+		{
+			for ( Tile tile : list )
+			{
+				tile.setTeam(null);
+			}
+		}
+	}
 }

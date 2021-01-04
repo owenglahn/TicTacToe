@@ -3,6 +3,7 @@ package gui;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -31,12 +32,12 @@ public class TicTacToe extends Application
 			Board instance = new Board();
 			setButtonSizes(instance);
 			List<HBox> rows = setRows(instance);
-			for ( int i = 0 ; i < 3 ; i++ )
+			for ( int i = 0 ; i < rows.size() ; i++ )
 			{
 				root.addRow(i, rows.get(i));
 			}
 			setTilesOnAction(instance);
-			pStage.setScene(new Scene(root, DIMENSION, DIMENSION));
+			pStage.setScene(new Scene(root, DIMENSION, DIMENSION + 20));
 			pStage.show();
 		} 
 		catch (Exception e) 
@@ -56,7 +57,8 @@ public class TicTacToe extends Application
 					@Override
 					public void handle(ActionEvent pEvent) 
 					{
-						aCurrentTeam = tile.setTeam(aCurrentTeam);
+						tile.setTeam(aCurrentTeam);
+						changeCurrentTeam();
 						if ( pBoard.hasWinner() )
 							declareWinner(tile.getTeamAsString());
 					}
@@ -75,9 +77,24 @@ public class TicTacToe extends Application
 		HBox top = new HBox();
 		HBox middle = new HBox();
 		HBox bottom = new HBox();
+		HBox restartBox = new HBox();
+		Button restart = new Button("Restart Game");
+		restart.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) 
+			{
+				pBoard.clear();
+				aCurrentTeam = Team.X;
+			}
+			
+		});
+		restart.setPrefWidth(DIMENSION);
+		restart.setStyle("-fx-background-color: LimeGreen;");
 		rows.add(top);
 		rows.add(middle);
 		rows.add(bottom);
+		rows.add(restartBox);
 		for ( Tile tile : pBoard.getGrid().get(0) )
 		{
 			top.getChildren().add((TileView)tile.getObserver());
@@ -90,6 +107,7 @@ public class TicTacToe extends Application
 		{
 			bottom.getChildren().add((TileView)tile.getObserver());
 		}
+		restartBox.getChildren().add(restart);
 		return rows;
 	}
 	
@@ -105,9 +123,13 @@ public class TicTacToe extends Application
 		}
 	}
 	
+	private static void changeCurrentTeam()
+	{
+		aCurrentTeam = Team.values()[(aCurrentTeam.ordinal() + 1) % 2];
+	}
+	
 	private static void declareWinner(String pTeamName)
 	{
-		//TODO
 		Alert winMessage = new Alert(Alert.AlertType.INFORMATION);
 		winMessage.setHeaderText("Winner is " + pTeamName + "!");
 		winMessage.show();

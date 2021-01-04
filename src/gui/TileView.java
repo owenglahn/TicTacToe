@@ -20,12 +20,15 @@ public class TileView extends Button implements AbstractObserver {
 	}
 
 	/*
-	 * @pre !aTile.isBlank()
 	 */
 	@Override
 	public void tileChanged() 
 	{
-		assert ! aTile.isBlank();
+		if ( aTile.isBlank() ) 
+		{
+			setText(null);
+			return;
+		}
 		setText(aTile.getTeamAsString());
 	}
 }

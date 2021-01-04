@@ -27,15 +27,18 @@ public class Tile {
 	/*
 	 * 
 	 */
-	public Team setTeam(Team pTeam)
+	public void setTeam(Team pTeam)
 	{
 		if (aTeam.isEmpty()) 
 		{
 			aTeam = Optional.ofNullable(pTeam);
 			aObserver.tileChanged();
-			return Team.values()[(pTeam.ordinal() + 1) % 2];
 		}
-		return pTeam;
+		else if ( pTeam == null ) 
+		{
+			aTeam = Optional.empty();
+			aObserver.tileChanged();
+		}
 	}
 	
 	public AbstractObserver getObserver()
